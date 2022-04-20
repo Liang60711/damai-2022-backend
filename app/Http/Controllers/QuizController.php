@@ -30,7 +30,10 @@ class QuizController extends Controller
             'to' => 'required|string|max:10'
         ]);
 
-        $data = $this->exchangeService->getExchangeRate($input['from'], $input['to']);
-        return new ExchangeResource($response);
+        $data = $this->exchangeService->getExchangeRate(strtoupper($input['from']), strtoupper($input['to']));
+        if (empty($data)){
+            return response()->json(['status'=>'-1', 'message'=>'params error']);
+        }
+        return new ExchangeResource($data);
     }
 }

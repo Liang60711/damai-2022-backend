@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Constants\CurrencyConstant;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Support\Facades\Http;
 
 /**
  *
@@ -33,11 +34,24 @@ class CurrencyRepository
      */
     public function getExchangeRate(string $currency)
     {
-        $client   = new Client();
-        $response = $client->get('https://tw.rter.info/capi.php');
-        $rateData = json_decode($response->getBody(), true);
+        $content = file_get_contents('https://tw.rter.info/capi.php');
+        $rateData = json_decode($content, true);
         $key      = "USD" . $currency;
         return $rateData[$key] ?? [];
+
+    }
+
+    /**
+     * 取得所有匯率表
+     * 
+     * @return collection
+     */
+    public function getRateTable()
+    {
+        $content = file_get_contents('https://tw.rter.info/capi.php');
+        $rateData = json_decode($content, true);
+        
+        return collect($rateData);
 
     }
 }

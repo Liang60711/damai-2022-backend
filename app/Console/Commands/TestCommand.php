@@ -43,7 +43,7 @@ class TestCommand extends Command
         $request = new Request([
             'from'   => 'TWD',
             'to'     => 'JPY',
-            'amount' => '100'
+            // 'amount' => '100'
         ]);
         $test    = app(QuizController::class);
         dd($test->getExchangeRate($request));
